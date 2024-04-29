@@ -8,6 +8,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import moment from "moment";
 import React, { ChangeEvent, useState } from "react";
 import { GrEdit } from "react-icons/gr";
 
@@ -38,6 +39,7 @@ const Todo = ({
       borderRadius={4}
       margin={2}
       width={"full"}
+      shadow={"0 0 8px gray"}
     >
       <HStack justifyContent={"space-between"}>
         {editActive ? (
@@ -47,8 +49,9 @@ const Todo = ({
             <Text fontWeight={500} fontSize={20}>
               {title || "Todo"}
             </Text>
-            <Text fontWeight={500} fontSize={15}>
-              {createdAt}
+            <Text color="gray" fontWeight={500} fontSize={15}>
+              {moment(createdAt).format("YYYY/MM/D hh:mm")}
+              <Text color="navy"> {moment(createdAt).fromNow()}</Text>
             </Text>
           </VStack>
         )}

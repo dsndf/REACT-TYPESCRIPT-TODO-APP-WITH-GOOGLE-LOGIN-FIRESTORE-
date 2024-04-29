@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  HStack,
-  IconButton,
-  Image,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
+import { HStack, IconButton, Image, Text, Tooltip } from "@chakra-ui/react";
 import { auth } from "../../firebase/firebaseConfig";
 import { getUser } from "../../context/AuthContextApi";
 import { MdLogout } from "react-icons/md";

@@ -7,7 +7,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { auth, signInWithGooglePopup } from "../firebase/firebaseConfig";
+import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
 export interface AuthContextType {
@@ -15,28 +15,24 @@ export interface AuthContextType {
     name: string;
     photo: string;
     email: string;
-  };
+  } | null;
   setUser?: Dispatch<SetStateAction<AuthContextType["user"]>>;
 }
 
 export const AuthContext = createContext<AuthContextType>({});
 
 const AuthContextApi = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<AuthContextType["user"]>({
-    name: "",
-    photo: "",
-    email: "",
-  });
+  const [user, setUser] = useState<AuthContextType["user"] | null>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-
     auth.onAuthStateChanged((user) => {
       if (!user) {
+        setUser(null);
         navigate("/google/login");
       } else {
-        console.log(user)
+        console.log(user);
         setUser({
           name: user.displayName,
           email: user.email,
@@ -55,4 +51,4 @@ const AuthContextApi = ({ children }: { children: ReactNode }) => {
 };
 
 export default AuthContextApi;
-export const getUser = ()=>useContext(AuthContext).user;
+export const getUser = () => useContext(AuthContext).user;

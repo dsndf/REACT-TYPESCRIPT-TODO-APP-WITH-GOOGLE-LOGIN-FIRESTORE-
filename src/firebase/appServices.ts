@@ -6,16 +6,19 @@ import {
   deleteDoc,
   doc,
   query,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import { orderBy } from "firebase/firestore/lite";
-// const userCollection = collection(db, "User");
 
 const todoCollection = collection(db, "Todo");
 
 class TodoServices {
   async addTodo(todo: TodoType) {
-    const newdoc = await addDoc(todoCollection, todo);
+    const newdoc = await addDoc(todoCollection, {
+      ...todo,
+      createdAt: String(todo.createdAt),
+    });
     return updateDoc(newdoc, { id: newdoc.id });
   }
   updateTodo(id: string, textTitle: string) {
@@ -26,8 +29,8 @@ class TodoServices {
     const docRef = doc(db, "Todo", id);
     return deleteDoc(docRef);
   }
-  getTodos() {
-    return getDocs(query(todoCollection, orderBy("createdAt", "asc")));
+  getTodos(email: string) {
+    return getDocs(query(todoCollection, where("creatorEmail", "==", email)));
   }
 }
 export const todoServiceProvider = new TodoServices();
