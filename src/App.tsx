@@ -1,22 +1,24 @@
-import Home from "./pages/Home.tsx";
 import { Route, Routes } from "react-router-dom";
-import GoogleLoginPage from "./pages/GoogleLoginPage.tsx";
-import Navbar from "./components/Navbar/Navbar.tsx";
+import { lazy } from "react";
+
+const Home = lazy(() => import("./pages/Home.tsx"));
+const Navbar = lazy(() => import("./components/Navbar/Navbar.tsx"));
+const GoogleLoginPage = lazy(() => import("./pages/GoogleLoginPage.tsx"));
 
 const App = () => {
   return (
     <div>
       <Routes>
         <Route
-          path="/"
+          path="/user/dashboard"
           element={
             <>
-            <Navbar/>
+              <Navbar />
               <Home />
             </>
           }
         />
-        <Route path="/google/login" element={<GoogleLoginPage />} />
+        <Route path="/" element={<GoogleLoginPage />} />
       </Routes>
     </div>
   );

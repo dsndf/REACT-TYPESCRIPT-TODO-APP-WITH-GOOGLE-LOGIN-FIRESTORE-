@@ -9,14 +9,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import moment from "moment";
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { GrEdit } from "react-icons/gr";
+import { TodoPropsType, TodoType } from "../../vite-env";
 
-interface TodoPropsType extends TodoType {
-  deleteTodo: (id: string) => void;
-  editTodo: (id: string, newTitle: string) => void;
-  isLoading: boolean;
-}
+
 
 const Todo = ({
   title,
@@ -35,21 +32,20 @@ const Todo = ({
     <Box
       boxShadow={"0 0 5px #a8c2cc66"}
       border={"1px solid smoke"}
-      padding={4}
+      padding={2}
       borderRadius={4}
       margin={2}
       width={"full"}
-      shadow={"0 0 8px gray"}
     >
       <HStack justifyContent={"space-between"}>
         {editActive ? (
-          <Input onChange={editChangeHandler} value={editTask} />
+          <Input onChange={editChangeHandler} maxLength={30} value={editTask} />
         ) : (
           <VStack alignItems={"flex-start"}>
-            <Text fontWeight={500} fontSize={20}>
-              {title || "Todo"}
+            <Text fontWeight={500} fontSize={["large"]}>
+              {title +" " + id || "Todo"}
             </Text>
-            <Text color="gray" fontWeight={500} fontSize={15}>
+            <Text color="gray" fontWeight={500} fontSize={["small", "medium"]}>
               {moment(createdAt).format("YYYY/MM/D hh:mm")}
               <Text color="navy"> {moment(createdAt).fromNow()}</Text>
             </Text>
@@ -75,7 +71,7 @@ const Todo = ({
               color: editActive ? "green" : "",
               backgroundColor: editActive ? "lightgreen" : "",
             }}
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            onClick={() => {
               if (editActive) {
                 editTodo(id, editTask);
                 setEditActive(false);

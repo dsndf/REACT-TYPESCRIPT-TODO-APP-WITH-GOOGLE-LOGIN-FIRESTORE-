@@ -3,13 +3,15 @@ import App from "./App.tsx";
 import { ChakraProvider } from "@chakra-ui/react";
 import AuthContextApi from "./context/AuthContextApi.tsx";
 import { BrowserRouter } from "react-router-dom";
-
+import TodoPaginationContextApi from "./context/TodoPaginationContextApi.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <ChakraProvider  >
+  <ChakraProvider>
     <BrowserRouter>
       <AuthContextApi>
-        <App />
+        <TodoPaginationContextApi>
+          <App />
+        </TodoPaginationContextApi>
       </AuthContextApi>
     </BrowserRouter>
   </ChakraProvider>

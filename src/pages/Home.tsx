@@ -1,34 +1,37 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  HStack,
-  Input,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Container, HStack, Input, VStack } from "@chakra-ui/react";
 import Todo from "../components/Todo/Todo";
 import { todoServiceProvider } from "../firebase/appServices";
 import { getUser } from "../context/AuthContextApi";
-import { DocumentData } from "firebase/firestore";
+import { TodoPaginationContextType, TodoType } from "../vite-env";
+import { getTodoPaginationStates } from "../context/TodoPaginationContextApi";
+import Pagination from "../components/Pagination/Pagination";
+import { current } from "@reduxjs/toolkit";
 
 const Home = () => {
-  if (!getUser()) return;
   const user = getUser();
+  const {
+    todos,
+    setTodos,
+    lastDoc,
+    setLastDoc,
+    setTotalPages,
+    currentPage,
+    setCurrentPage,
+  } = getTodoPaginationStates() as TodoPaginationContextType;
   const [textTitle, setTextTitle] = useState<TodoType["title"]>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSortedInDesc, setIsSortedInDesc] = useState<boolean>(false);
+  const [isSortedInDesc, setIsSortedInDesc] = useState<boolean>(true);
 
   const textChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTextTitle(e.target.value);
   };
 
-  const [todos, setTodos] = useState<TodoType[]>([]);
-
   const deleteTodo = async (id: TodoType["id"]) => {
     setIsLoading(true);
     try {
       console.log({ id });
+      setCurrentPage(1);
       await todoServiceProvider.deleteTodo(id);
       getTodosHandler();
     } catch (error) {
@@ -64,6 +67,7 @@ const Home = () => {
     try {
       await todoServiceProvider.updateTodo(id, newTitle);
       getTodosHandler();
+      setCurrentPage(1);
     } catch (error) {
       console.error(error);
       if (error instanceof Error) alert("Something went wrong.");
@@ -87,10 +91,13 @@ const Home = () => {
   const getTodosHandler = async () => {
     setIsLoading(true);
     try {
-      const allDocs = await todoServiceProvider.getTodos(user?.email as string);
-      console.log({ allDocs });
-      let allTodos = allDocs.docs.map((doc) => doc.data());
+      const { resultDocsPerPage, docsCount } =
+        await todoServiceProvider.getTodos(user?.email as string);
+      setLastDoc(resultDocsPerPage.docs[resultDocsPerPage.docs.length - 1]);
+      let allTodos = resultDocsPerPage.docs.map((doc) => doc.data());
       setTodos(allTodos as typeof todos);
+      setTotalPages(todoServiceProvider.pageCount(docsCount));
+      setCurrentPage(1);
     } catch (error) {
       console.error(error);
       if (error instanceof Error) alert("Something went wrong.");
@@ -100,8 +107,9 @@ const Home = () => {
   };
 
   useEffect(() => {
+    if (!user) return;
     getTodosHandler();
-  }, []);
+  }, [user]);
 
   return (
     <Container padding={"20px"}>
@@ -111,6 +119,7 @@ const Home = () => {
         value={textTitle}
         onChange={textChangeHandler}
         marginY={3}
+        maxLength={30}
       />
       <HStack justifyContent={"space-between"} alignItems={"center"}>
         <Button
@@ -150,6 +159,7 @@ const Home = () => {
             );
           })}
       </VStack>
+      <Pagination selectedPage={currentPage} />
     </Container>
   );
 };

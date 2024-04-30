@@ -1,4 +1,4 @@
-import React, {
+import {
   Dispatch,
   ReactNode,
   SetStateAction,
@@ -30,7 +30,7 @@ const AuthContextApi = ({ children }: { children: ReactNode }) => {
     auth.onAuthStateChanged((user) => {
       if (!user) {
         setUser(null);
-        navigate("/google/login");
+        navigate("/");
       } else {
         console.log(user);
         setUser({
@@ -38,7 +38,7 @@ const AuthContextApi = ({ children }: { children: ReactNode }) => {
           email: user.email,
           photo: user.photoURL,
         } as AuthContextType["user"]);
-        navigate("/");
+        navigate("/user/dashboard");
       }
     });
   }, []);

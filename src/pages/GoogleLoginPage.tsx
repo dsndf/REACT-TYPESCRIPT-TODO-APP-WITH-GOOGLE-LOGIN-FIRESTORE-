@@ -1,12 +1,13 @@
 import { Box, Button, Heading, Stack, Tooltip } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { signInWithGooglePopup } from "../firebase/firebaseConfig";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext, AuthContextType } from "../context/AuthContextApi";
 const GoogleLoginPage = () => {
   const authState = useContext(AuthContext) as AuthContextType;
-
+  const [throttling, setThrottling] = useState<boolean>(false);
   const googleLoginHanlder = async () => {
+    setThrottling(true);
     try {
       const result = await signInWithGooglePopup();
       const { user } = result;
@@ -20,12 +21,17 @@ const GoogleLoginPage = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setThrottling(false);
     }
   };
+
   return (
     <Box height={"100vh"} p={10}>
       <Stack height={"100%"} justifyContent={"center"} alignItems={"center"}>
-        <Heading my={5}>Login to create your todos</Heading>
+        <Heading fontSize={["larger", "x-large", "xx-large"]} my={5}>
+          Login to create your todos
+        </Heading>
         <Tooltip hasArrow label="Login">
           <Button
             onClick={googleLoginHanlder}
@@ -35,6 +41,7 @@ const GoogleLoginPage = () => {
             bg={"#000722"}
             color={"white"}
             _hover={{ bg: "" }}
+            isLoading={throttling}
           >
             Google Login
           </Button>
