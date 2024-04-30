@@ -1,19 +1,16 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Button, Container, HStack, Input, VStack } from "@chakra-ui/react";
+import { Button, Container, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import Todo from "../components/Todo/Todo";
 import { todoServiceProvider } from "../firebase/appServices";
 import { getUser } from "../context/AuthContextApi";
 import { TodoPaginationContextType, TodoType } from "../vite-env";
 import { getTodoPaginationStates } from "../context/TodoPaginationContextApi";
 import Pagination from "../components/Pagination/Pagination";
-import { current } from "@reduxjs/toolkit";
-
 const Home = () => {
   const user = getUser();
   const {
     todos,
     setTodos,
-    lastDoc,
     setLastDoc,
     setTotalPages,
     currentPage,
@@ -159,7 +156,8 @@ const Home = () => {
             );
           })}
       </VStack>
-      <Pagination selectedPage={currentPage} />
+      {todos.length!==0 && <Pagination selectedPage={currentPage} />}
+      {todos.length ===0  && <Text textAlign={'center'}>No todos</Text>}
     </Container>
   );
 };

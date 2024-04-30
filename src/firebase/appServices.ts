@@ -91,4 +91,4 @@ class TodoServices {
     return { resultDocsPerPage: await getDocs(dataQuery), docsCount };
   }
 }
-export const todoServiceProvider = new TodoServices(4);
+export const todoServiceProvider = new TodoServices(3);

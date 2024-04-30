@@ -43,7 +43,7 @@ const Todo = ({
         ) : (
           <VStack alignItems={"flex-start"}>
             <Text fontWeight={500} fontSize={["large"]}>
-              {title +" " + id || "Todo"}
+              {title || "Todo"}
             </Text>
             <Text color="gray" fontWeight={500} fontSize={["small", "medium"]}>
               {moment(createdAt).format("YYYY/MM/D hh:mm")}

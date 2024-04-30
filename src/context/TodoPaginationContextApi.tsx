@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import {
   Doc,
   TodoPaginationContextApiProps,
@@ -7,7 +7,6 @@ import {
 } from "../vite-env";
 import { todoServiceProvider } from "../firebase/appServices";
 import { getUser } from "./AuthContextApi";
-import { limit } from "firebase/firestore";
 
 const TodoPaginationContext = createContext<
   TodoPaginationContextType | undefined
@@ -85,15 +84,7 @@ const TodoPaginationContextApi = ({
     }
   };
 
-  useEffect(() => {
-    console.log({
-      limit: todoServiceProvider.limit,
-      lastDoc: lastDoc.id,
-      firstDoc: firstDoc.id,
-      currentPage,
-      totalPages,
-    });
-  }, [lastDoc, firstDoc, currentPage, totalPages]);
+
   return (
     <TodoPaginationContext.Provider
       value={{
