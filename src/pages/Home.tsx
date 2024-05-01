@@ -1,5 +1,12 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Button, Container, HStack, Input, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Container,
+  HStack,
+  Input,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import Todo from "../components/Todo/Todo";
 import { todoServiceProvider } from "../firebase/appServices";
 import { getUser } from "../context/AuthContextApi";
@@ -125,7 +132,9 @@ const Home = () => {
           color={"white"}
           bg={"#000722"}
           onClick={createTodoHandler}
+          isDisabled={!textTitle}
           isLoading={isLoading}
+          size={['sm']}
         >
           Create
         </Button>
@@ -156,8 +165,8 @@ const Home = () => {
             );
           })}
       </VStack>
-      {todos.length!==0 && <Pagination selectedPage={currentPage} />}
-      {todos.length ===0  && <Text textAlign={'center'}>No todos</Text>}
+      {todos.length !== 0 && <Pagination selectedPage={currentPage} />}
+      {todos.length === 0 && <Text textAlign={"center"}>No todos</Text>}
     </Container>
   );
 };

@@ -30,7 +30,7 @@ class TodoServices {
   async setLimit(page: number) {
     const docsCount = (await getCountFromServer(todoCollection)).data().count;
     this.limitForLastPage = docsCount - this.limit * page;
-  } 
+  }
 
   async addTodo(todo: TodoType) {
     const newdoc = await addDoc(todoCollection, {
@@ -79,7 +79,11 @@ class TodoServices {
   }
 
   async getTodos(email: string) {
-    const docsCount = (await getCountFromServer(todoCollection)).data().count;
+    const docsCount = (
+      await getCountFromServer(
+        query(todoCollection, where("creatorEmail", "==", email))
+      )
+    ).data().count;
     const dataQuery = query(
       todoCollection,
       where("creatorEmail", "==", email),
