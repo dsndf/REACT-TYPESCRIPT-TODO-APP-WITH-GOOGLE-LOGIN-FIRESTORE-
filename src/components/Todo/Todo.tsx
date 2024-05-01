@@ -13,8 +13,6 @@ import { ChangeEvent, useState } from "react";
 import { GrEdit } from "react-icons/gr";
 import { TodoPropsType, TodoType } from "../../vite-env";
 
-
-
 const Todo = ({
   title,
   id,
@@ -42,7 +40,11 @@ const Todo = ({
           <Input onChange={editChangeHandler} maxLength={30} value={editTask} />
         ) : (
           <VStack alignItems={"flex-start"}>
-            <Text fontWeight={500} fontSize={["large"]}>
+            <Text
+              fontWeight={500}
+              fontSize={["small", "medium", "large"]}
+              width={[150, 250]}
+            >
               {title || "Todo"}
             </Text>
             <Text color="gray" fontWeight={500} fontSize={["small", "medium"]}>

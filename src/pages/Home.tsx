@@ -123,7 +123,7 @@ const Home = () => {
         value={textTitle}
         onChange={textChangeHandler}
         marginY={3}
-        maxLength={30}
+        maxLength={50}
       />
       <HStack justifyContent={"space-between"} alignItems={"center"}>
         <Button
